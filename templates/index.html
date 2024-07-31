@@ -3,38 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Debt Calculator</title>
+    <title>Debt calculator</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <style>
-        .result {
+        .result, .balance {
             margin-top: 20px;
             padding: 10px;
             border: 1px solid #ccc;
             background-color: #f9f9f9;
         }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .delete-btn {
+            color: red;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        .delete-btn:hover {
+            text-decoration: underline;
+        }
+        input[type="text"], input[type="number"], select {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        input[type="submit"] {
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
 <body>
-    <h1>Debt Calculator</h1>
+    <h1>Debt calculator</h1>
     <form action="/" method="post">
+
         <label for="amount_paid">Amount paid:</label>
         <input type="number" id="amount_paid" name="amount_paid" step="0.01" required><br><br>
-
+        
         <label for="payer">Who paid?</label>
         <select id="payer" name="payer" required>
-            <option value="me">Me</option>
-            <option value="friend">My friend</option>
+            <option value="Leny">Leny</option>
+            <option value="Cyril">Cyril</option>
         </select><br><br>
+
+        <label for="description">For what?</label>
+        <input type="text" id="description" name="description" required><br><br>
 
         <input type="submit" value="Calculate">
     </form>
 
-    {% if message %}
-    <div class="result">
-        <h2>Result:</h2>
-        <p>{{ message }}</p>
+    <div class="balance">
+        <h2>Balance:</h2>
+        <p>{{ balance_message }}</p>
+        <p>Leny's total: {{ leny_total }} euros</p>
+        <p>Cyril's total: {{ cyril_total }} euros</p>
     </div>
-    {% endif %}
 
+    <h2>Transactions:</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Number</th>
+                <th>Description</th>
+                <th>Amount paid</th>
+                <th>Payer</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transaction in transactions %}
+            <tr>
+                <td>{{ transaction.id }}</td>
+                <td>{{ transaction.description }}</td>
+                <td>{{ transaction.amount_paid }}</td>
+                <td>{{ transaction.payer }}</td>
+                <td>
+                    <a href="{{ url_for('delete_transaction', id=transaction.id) }}" class="delete-btn">🗑️</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </body>
 </html>
