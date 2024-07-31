@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debt Calculator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Debt Calculator</h1>
+    <form action="/" method="post">
+        <label for="amount_paid">Amount paid:</label>
+        <input type="number" id="amount_paid" name="amount_paid" step="0.01" required><br><br>
+
+        <label for="payer">Who paid?</label>
+        <select id="payer" name="payer" required>
+            <option value="me">Me</option>
+            <option value="friend">My friend</option>
+        </select><br><br>
+
+        <input type="submit" value="Calculate">
+    </form>
+
+    {% if message %}
+    <div class="result">
+        <h2>Result:</h2>
+        <p>{{ message }}</p>
+    </div>
+    {% endif %}
+
+</body>
+</html>
